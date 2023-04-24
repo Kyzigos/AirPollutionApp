@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.grpc.proto.smartproto";
+option java_outer_classname = "SmartAlertsProtoImpl";
+
+package smartproto;
+
+service PersonalizedAlertsService {
+  rpc CreateAlert(AlertCreationRequest) returns (AlertCreationResponse) {}
+  rpc ListAlerts(ListAlertsRequest) returns (ListAlertsResponse) {}
+  rpc DeleteAlert(AlertDeletionRequest) returns (AlertDeletionResponse) {}
+}
+
+message AlertCreationRequest {
+  string user_id = 1;
+  AlertType alert_type = 2;
+  Location location = 3;
+  float threshold = 4;
+}
+
+message AlertCreationResponse {
+  string alert_id = 1;
+}
+
+message ListAlertsRequest {
+  string user_id = 1;
+}
+
+message ListAlertsResponse {
+  repeated UserAlert alerts = 1;
+}
+
+message AlertDeletionRequest {
+  string user_id = 1;
+  string alert_id = 2;
+}
+
+message AlertDeletionResponse {
+  bool success = 1;
+}
+
+message Location {
+  float latitude = 1;
+  float longitude = 2;
+}
+
+message UserAlert {
+  string alert_id = 1;
+  string user_id = 2;
+  AlertType alert_type = 3;
+  Location location = 4;
+  float threshold = 5;
+}
+
+enum AlertType {
+  PM25 = 0;
+  PM10 = 1;
+  OZONE = 2;
+}

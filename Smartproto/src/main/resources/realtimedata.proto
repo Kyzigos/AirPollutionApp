@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.grpc.proto.smartproto";
+option java_outer_classname = "SmartProtoImpl";
+
+package smartproto;
+
+// Interface exported by the server.
+service AirQualityService {
+
+rpc getPM25(PMRequest) returns (PMResponse) {}
+rpc getPM10(PMRequest) returns (PMResponse) {}
+rpc getOzone(OzoneRequest) returns (OzoneResponse) {}
+rpc getAirQualitySummary(SummaryRequest) returns (SummaryResponse) {}
+rpc getAirQualityByLocation(LocationRequest) returns (LocationResponse) {}
+
+}
+
+message PMRequest {
+string city = 1;
+string area = 2;
+}
+
+message PMResponse {
+float value = 1;
+}
+
+message OzoneRequest {
+string city = 1;
+string area = 2;
+}
+
+message OzoneResponse {
+float value = 1;
+}
+
+message SummaryRequest {
+string city = 1;
+}
+
+message SummaryResponse {
+repeated AirQualitySummary summary = 1;
+}
+
+message AirQualitySummary {
+string area = 1;
+float pm25Value = 2;
+float pm10Value = 3;
+float ozoneValue = 4;
+float airQualityIndex = 5;
+}
+
+message LocationRequest {
+float latitude = 1;
+float longitude = 2;
+}
+
+message LocationResponse {
+repeated AirQualityByLocation airQualityList = 1;
+}
+
+message AirQualityByLocation {
+string area = 1;
+float pm25Value = 2;
+float pm10Value = 3;
+float ozoneValue = 4;
+}

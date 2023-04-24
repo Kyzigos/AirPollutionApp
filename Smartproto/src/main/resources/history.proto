@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.grpc.proto.smartproto";
+option java_outer_classname = "HistoryDataProtoImpl";
+
+package smartproto;
+
+service AirQualityHistoryService {
+  rpc GetPM25History(HistoryRequest) returns (PMHistoryResponse) {}
+  rpc GetPM10History(HistoryRequest) returns (PMHistoryResponse) {}
+  rpc GetOzoneHistory(HistoryRequest) returns (OzoneHistoryResponse) {}
+  rpc GetAirQualitySummaryHistory(SummaryHistoryRequest) returns (SummaryHistoryResponse) {}
+  rpc GetAirQualityByLocationHistory(LocationHistoryRequest) returns (LocationHistoryResponse) {}
+}
+
+message HistoryRequest {
+  string city = 1;
+  string area = 2;
+  int32 days = 3; // Number of days to retrieve historical data for
+}
+
+message PMHistoryResponse {
+  repeated PMHistoryEntry entries = 1;
+}
+
+message PMHistoryEntry {
+  int64 timestamp = 1; // Timestamp (in seconds since the Unix epoch)
+  float value = 2;
+}
+
+message OzoneHistoryResponse {
+  repeated OzoneHistoryEntry entries = 1;
+}
+
+message OzoneHistoryEntry {
+  int64 timestamp = 1; // Timestamp (in seconds since the Unix epoch)
+  float value = 2;
+}
+
+message SummaryHistoryRequest {
+  string city = 1;
+  int32 days = 2; // Number of days to retrieve historical data for
+}
+
+message SummaryHistoryResponse {
+  repeated AirQualitySummaryHistory summary = 1;
+}
+
+message AirQualitySummaryHistory {
+  string area = 1;
+  repeated PMHistoryEntry pm25History = 2;
+  repeated PMHistoryEntry pm10History = 3;
+  repeated OzoneHistoryEntry ozoneHistory = 4;
+}
+
+message LocationHistoryRequest {
+  float latitude = 1;
+  float longitude = 2;
+  int32 days = 3; // Number of days to retrieve historical data for
+}
+
+message LocationHistoryResponse {
+  repeated AirQualityByLocationHistory airQualityList = 1;
+}
+
+message AirQualityByLocationHistory {
+  string area = 1;
+  repeated PMHistoryEntry pm25History = 2;
+  repeated PMHistoryEntry pm10History = 3;
+  repeated OzoneHistoryEntry ozoneHistory = 4;
+}
